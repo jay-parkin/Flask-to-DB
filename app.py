@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 
@@ -7,6 +8,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://feb_dev:123456@localhost:5432/feb_db"
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 # Model - table
 class Product(db.Model):
@@ -20,6 +22,21 @@ class Product(db.Model):
     description = db.Column(db.String)
     price = db.Column(db.Float)
     stock = db.Column(db.Integer)
+
+# Schema
+# Help to convert sqlalchemy to python
+class ProductSchema(ma.Schema):
+    class Meta:
+        # fields
+        fields = ( "id", "name", "description", "price", "stock" )
+
+
+# to handle multiple products
+products_schema = ProductSchema(many=True)
+
+# to handle single product
+product_schema = ProductSchema()
+
 
 # CLI commands
 # python3 -m flask create
@@ -68,6 +85,7 @@ def seed_tables():
 
         count += 1
 
+    db.session.add_all(products_list)
     #commit
     db.session.commit()
 
@@ -80,5 +98,57 @@ def drop_tables():
     print("Tables Dropped..")
 
 
+#  /products, GET => getting all products
+#  /products/id, GET => get a signle product whose id is equal to the one in the url
+#  /products, POST => create a new product
+#  /products/id, PUT/PATCH => edit/update the product whose id is equal to the one in the url
+#  /products/id, DELETE => delete the products whose id is equal to the one in the url
+
+
+@app.route("/products")
+def get_products():
+    #  SELECT * FROM Products
+    # stmt = statement
+    stmt = db.select(Product) # Result # [[]]
+    products_list = db.session.scalars(stmt) # ScalarResult # []
+    data = products_schema.dump(products_list)
+
+    return data
+
+#  using a dynamic route
+@app.route("/products/<int:product_id>")
+def get_product(product_id):
+
+    #  SELECT * FROM products WHERE id=int:id
+    stmt = db.select(Product).filter_by(id = product_id) # Result # [[]]
+    product = db.session.scalar(stmt) # ScalarResult # []
+
+    #  return whether the product exists
+    if product:
+        data = product_schema.dump(product)
+
+        return data
+    else:
+        return {"error": f"Product with id {product_id} doesn't exist.."}, 404
+
+    
+
+@app.route("/products", methods=["POST"])
+def create_product():
+    product_fields = request.get_json()
+    
+    new_product = Product(
+        name = product_fields.get("name"),
+        description = product_fields.get("description"),
+        price = product_fields.get("price"),
+        stock = product_fields.get("stock")
+    )
+
+    db.session.add(new_product)
+    db.session.commit()
+
+    # print(f"{new_product.get("name")} has been added..")
+
+    return product_schema.dump(new_product), 201
 
 
