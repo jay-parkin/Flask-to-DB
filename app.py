@@ -136,7 +136,7 @@ def get_product(product_id):
 @app.route("/products", methods=["POST"])
 def create_product():
     product_fields = request.get_json()
-    
+
     new_product = Product(
         name = product_fields.get("name"),
         description = product_fields.get("description"),
@@ -151,4 +151,33 @@ def create_product():
 
     return product_schema.dump(new_product), 201
 
+@app.route("/products/<int:product_id>", methods=["PUT", "PATCH"])
+def update_product(product_id):
 
+    #  find the product from the database with the id = product_id
+    stmt = db.select(Product).filter_by(id = product_id) # Result # [[]]
+    product = db.session.scalar(stmt) # ScalarResult # []
+
+    #  retrieve the data from the body of the request
+    body_data = request.get_json()
+    
+    #  update the atributes
+    if product:
+        product.name = body_data.get("name") or product.name
+        product.description = body_data.get("description") or product.description
+        product.price = body_data.get("price") or product.price
+        product.stock = body_data.get("stock") or product.stock
+
+        #  commit
+        db.session.commit()
+
+        #  return something
+        return product_schema.dump(product)
+
+    else:
+        return {"error": f"Product with id {product_id} doesn't exist"}, 404
+
+
+    
+
+    
