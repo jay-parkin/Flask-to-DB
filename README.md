@@ -30,8 +30,6 @@ products = [
 ```
 
 ```python
-    print("Tables Created..")
-
 @app.cli.command("seed")
 def seed_tables():
     # Create a product object
@@ -54,3 +52,9 @@ def seed_tables():
 
     print(f"{count} Tables seeded..")
 ```
+
+## CLI Commands
+
+- @app.cli.command("drop")
+- @app.cli.command("create")
+- @app.cli.command("seed")
