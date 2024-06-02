@@ -28,3 +28,29 @@ products = [
         {"name": "Bluetooth Headset", "price": "$79", "description": "Lightweight Bluetooth headset with clear audio and long battery life.", "stock": 75}
     ]
 ```
+
+```python
+    print("Tables Created..")
+
+@app.cli.command("seed")
+def seed_tables():
+    # Create a product object
+    count = 0
+    for product in products:
+
+        product_obj = Product()
+        product_obj.name = product["name"]
+        product_obj.price = float(product["price"].replace("$", ""))
+        product_obj.description = product["description"]
+        product_obj.stock = product["stock"]
+
+        # add to session
+        db.session.add(product_obj)
+
+        count += 1
+
+    #commit
+    db.session.commit()
+
+    print(f"{count} Tables seeded..")
+```

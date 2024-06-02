@@ -24,12 +24,12 @@ class Product(db.Model):
 # CLI commands
 # python3 -m flask create
 @app.cli.command("create")
-def create_db():
+def create_tables():
     db.create_all()
     print("Tables Created..")
 
 @app.cli.command("seed")
-def seed_db():
+def seed_tables():
     # Create a product object
     products = [
         {"name": "Smartphone", "price": "$799", "description": "High-performance smartphone with advanced camera features.", "stock": 35},
@@ -73,7 +73,11 @@ def seed_db():
 
     print(f"{count} Tables seeded..")
 
-    
+@app.cli.command("drop")
+def drop_tables():
+    db.drop_all()
+
+    print("Tables Dropped..")
 
 
 
