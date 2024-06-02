@@ -2,11 +2,11 @@
 
 Term 2 Flask to Postgres DB
 
-- /products, GET => getting all products
-- /products/id, GET => get a signle product whose id is equal to the one in the url
-- /products, POST => create a new product
-- /products/id, PUT/PATCH => edit/update the product whose id is equal to the one in the url
-- /products/id, DELETE => delete the products whose id is equal to the one in the url
+- <b>/products, GET</b> => getting all products
+- <b>/products/id, GET</b> => get a signle product whose id is equal to the one in the url
+- <b>/products, POST</b> => create a new product
+- <b>/products/id, PUT/PATCH</b> => edit/update the product whose id is equal to the one in the url
+- <b>/products/id, DELETE</b> => delete the products whose id is equal to the one in the url
 
 ## Mock database
 
