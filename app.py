@@ -178,6 +178,18 @@ def update_product(product_id):
         return {"error": f"Product with id {product_id} doesn't exist"}, 404
 
 
-    
+@app.route("/products/<int:product_id>", methods=["DELETE"])
+def delete_product(product_id):
+    stmt = db.select(Product).where(Product.id == product_id)
+    product = db.session.scalar(stmt)
 
-    
+    if product:
+        db.session.delete(product)
+
+        db.session.commit()
+
+        return {"message": f"Product with id {product_id} has been deleted"}
+
+    else:
+
+        return {"error": f"Product with id {product_id} doesn't exist"}, 404
