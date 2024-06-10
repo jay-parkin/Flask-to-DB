@@ -7,6 +7,8 @@ Term 2 Flask to Postgres DB
 - <b>/products, POST</b> => create a new product
 - <b>/products/id, PUT/PATCH</b> => edit/update the product whose id is equal to the one in the url
 - <b>/products/id, DELETE</b> => delete the products whose id is equal to the one in the url
+- <b>/auth/register, POST</b> => creates a new user
+- <b>/auth/login, POST</b> => checks user db and allows user to login in when the password is correct
 
 ## Mock database
 
