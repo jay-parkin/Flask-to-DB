@@ -35,6 +35,37 @@ products = [
     ]
 ```
 
+```bash
+    users = [
+        {
+            "name": "User 1",
+            "email": "user1@email.com",
+            "password": bcrypt.generate_password_hash("123456").decode('utf8')
+        },
+        {
+            "name": "Admin User",
+            "email": "admin@email.com",
+            "password": bcrypt.generate_password_hash("123456").decode('utf8'),
+            "is_admin": True
+        },
+        {
+            "name": "User 2",
+            "email": "user2@email.com",
+            "password": bcrypt.generate_password_hash("123456").decode('utf8')
+        },
+        {
+            "name": "User 3",
+            "email": "user3@email.com",
+            "password": bcrypt.generate_password_hash("123456").decode('utf8')
+        },
+        {
+            "name": "User 4",
+            "email": "user4@email.com",
+            "password": bcrypt.generate_password_hash("123456").decode('utf8')
+        }
+    ]
+```
+
 ## CLI Commands
 
 - @app.cli.command("drop")
