@@ -35,6 +35,33 @@ products = [
     ]
 ```
 
+## CLI Commands
+
+- @app.cli.command("drop")
+
+```python
+    @app.cli.command("drop")
+    def drop_tables():
+        db.drop_all()
+
+        print("Tables Dropped..")
+```
+
+<br>
+
+- @app.cli.command("create")
+
+```python
+    @app.cli.command("create")
+    def create_tables():
+        db.create_all()
+        print("Tables Created..")
+```
+
+<br>
+
+- @app.cli.command("seed")
+
 ```python
 @app.cli.command("seed")
 def seed_tables():
@@ -58,9 +85,3 @@ def seed_tables():
 
     print(f"{count} Tables seeded..")
 ```
-
-## CLI Commands
-
-- @app.cli.command("drop")
-- @app.cli.command("create")
-- @app.cli.command("seed")
